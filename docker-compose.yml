@@ -1,9 +1,12 @@
-version: '3.8'
+version: '3.8' # Versão recomendada do Docker Compose
 services:
-  praetor-api-service: # Nome do serviço dentro da stack
-    build: .
+  praetor-api: # Nome do seu serviço dentro da Stack (simples, minúsculas)
+    build: . # Indica para construir a imagem a partir do Dockerfile no contexto atual (seu repositório Git)
     ports:
-      - "3001:3000" # Mapeia a porta 3001 do host para a 3000 do contêiner
-    restart: unless-stopped
+      - "3001:3000" # Mapeamento de portas: HostPort (VPS) : ContainerPort (sua API)
+    restart: unless-stopped # Garante que o contêiner reinicie automaticamente se parar
     environment:
-      - API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U
+      # Sua chave de API está hardcoded no index.js atualmente.
+      # É altamente recomendado gerenciar chaves de API com variáveis de ambiente do Portainer
+      # ou Docker Secrets em um ambiente de produção para maior segurança.
+      - [cite_start]API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U #
