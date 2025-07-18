@@ -15,11 +15,26 @@ const app = express();
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Praetor IA v4.5 - Servidor de Produção Ativo.');
+  res.send('Praetor IA v5.0 - Produção Final Ativada.');
 });
 
+// ===================================================================
+// ESPECIALISTA 1: ANÁLISE DE PETIÇÃO (VERSÃO MAIS INTELIGENTE)
+// ===================================================================
 async function analisarPeticao(textoDoDocumento) {
-  const prompt = `Sua tarefa é analisar uma petição inicial ou recurso de um autor e retornar um objeto JSON com "pontuacao", "teses", e "precedentes". A pontuação deve ser de 0 a 100, refletindo a chance de sucesso. As teses devem resumir os 3 argumentos mais importantes do autor. Os precedentes devem ser 1 ou 2 resumos de fundamentos legais aplicáveis. O array de precedentes nunca deve estar vazio ou conter 'undefined'. Texto para análise: """${textoDoDocumento.substring(0, 8000)}""" Responda APENAS com o objeto JSON.`;
+  const prompt = `
+    Siga estes passos em ordem para analisar o documento jurídico de um autor (petição inicial ou recurso):
+    1.  **Análise Fática e Veredito:** Leia o texto, identifique as teses chave e determine o resultado para o autor (sucesso, fracasso, parcial).
+    2.  **Justificativa da Pontuação:** Com base no veredito, escreva uma frase curta justificando a pontuação. Ex: "O autor teve sucesso claro pois o réu não provou a entrega do cartão, portanto a pontuação deve ser alta."
+    3.  **Geração do JSON:** Crie um objeto JSON com as chaves "pontuacao", "teses", "precedentes", "dadosQuantitativos", e "prazosImportantes".
+        - A "pontuacao" (0 a 100) DEVE ser consistente com sua justificativa.
+        - As "teses" devem ser os 3 argumentos mais importantes.
+        - Os "precedentes" devem ser 1 ou 2 resumos de fundamentos legais aplicáveis, nunca 'undefined'.
+        - Extraia "valorDaCausa", "valorDaCondenacao", "dataAudiencia" e "prazoProcessual".
+
+    Texto para análise: """${textoDoDocumento.substring(0, 8000)}"""
+    Responda APENAS com o objeto JSON final.
+  `;
   
   try {
     const result = await model.generateContent(prompt);
@@ -34,6 +49,9 @@ async function analisarPeticao(textoDoDocumento) {
   }
 }
 
+// ===================================================================
+// ESPECIALISTA 2: ANÁLISE DE CONTESTAÇÃO (VERSÃO ESTÁVEL)
+// ===================================================================
 async function analisarContestacao(textoDoDocumento) {
   const prompt = `Analise a peça de contestação a seguir. Identifique os 2 principais argumentos de defesa e 1 possível ponto fraco. Retorne sua análise como um objeto JSON com as chaves "tipoDePeca", "tesesDaDefesa", e "pontosFracosDaDefesa". Texto para análise: """${textoDoDocumento.substring(0, 8000)}""" Responda APENAS com o objeto JSON.`;
 
@@ -50,6 +68,7 @@ async function analisarContestacao(textoDoDocumento) {
   }
 }
 
+// --- Endpoints ---
 app.post('/v1/analise/peticao', upload.single('arquivo'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
   try {
@@ -73,5 +92,5 @@ app.post('/v1/analise/contestacao', upload.single('arquivo'), async (req, res) =
 });
 
 app.listen(3000, () => {
-  console.log('Servidor Praetor IA v4.5 (Produção) está rodando!');
+  console.log('Servidor Praetor IA v5.0 (Produção Final) está rodando!');
 });
