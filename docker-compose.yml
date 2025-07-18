@@ -1,6 +1,6 @@
 version: '3.8' # Versão mais recente e robusta
 services:
-  praetor-ia-api: # Nome do seu serviço (pode ser "api", "backend", etc.)
+  praetor-api: # Nome do seu serviço (pode ser "api", "backend", etc.)
     build: . # Indica que o Dockerfile está no mesmo diretório do docker-compose.yml
     # Ou, se preferir usar uma imagem já construída e presente no seu Portainer:
     # image: praetor-ia-api:latest # Use o nome da imagem que você construiu na Opção 1
