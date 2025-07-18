@@ -1,9 +1,9 @@
 version: '3.8'
 services:
-  praetor-api:
+  web: # Nome do serviço dentro da Stack - MUITO SIMPLES
     build: .
     ports:
-      - "3001:3000"
+      - "3001:3000" # Mapeamento: porta 3001 da VPS para porta 3000 do contêiner
     restart: unless-stopped
     environment:
       - API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U
