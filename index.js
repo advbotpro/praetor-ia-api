@@ -15,22 +15,20 @@ const app = express();
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Praetor IA v5.0 - Produção Final Ativada.');
+  res.send('Praetor IA v5.1 - Produção Final (Ajustada).');
 });
 
 // ===================================================================
-// ESPECIALISTA 1: ANÁLISE DE PETIÇÃO (VERSÃO MAIS INTELIGENTE)
+// ESPECIALISTA 1: ANÁLISE DE PETIÇÃO (PROMPT À PROVA DE FALHAS)
 // ===================================================================
 async function analisarPeticao(textoDoDocumento) {
   const prompt = `
-    Siga estes passos em ordem para analisar o documento jurídico de um autor (petição inicial ou recurso):
-    1.  **Análise Fática e Veredito:** Leia o texto, identifique as teses chave e determine o resultado para o autor (sucesso, fracasso, parcial).
-    2.  **Justificativa da Pontuação:** Com base no veredito, escreva uma frase curta justificando a pontuação. Ex: "O autor teve sucesso claro pois o réu não provou a entrega do cartão, portanto a pontuação deve ser alta."
-    3.  **Geração do JSON:** Crie um objeto JSON com as chaves "pontuacao", "teses", "precedentes", "dadosQuantitativos", e "prazosImportantes".
-        - A "pontuacao" (0 a 100) DEVE ser consistente com sua justificativa.
-        - As "teses" devem ser os 3 argumentos mais importantes.
-        - Os "precedentes" devem ser 1 ou 2 resumos de fundamentos legais aplicáveis, nunca 'undefined'.
-        - Extraia "valorDaCausa", "valorDaCondenacao", "dataAudiencia" e "prazoProcessual".
+    Sua tarefa é analisar um documento jurídico e retornar um objeto JSON. Siga estes 5 passos OBRIGATORIAMENTE e em ordem:
+    1.  LEITURA E VEREDITO: Leia o documento e determine o resultado para o autor (sucesso, fracasso, parcial).
+    2.  EXTRAÇÃO DE TESES: Identifique as 3 teses jurídicas principais que levaram ao veredito.
+    3.  EXTRAÇÃO DE DADOS: Encontre os seguintes dados específicos no texto: "valorDaCausa", "valorDaCondenacao", "dataAudiencia", e qualquer "prazoProcessual" (em dias, horas, etc.).
+    4.  EXTRAÇÃO DE PRECEDENTES: Encontre 1 ou 2 resumos de jurisprudência ou Súmulas citadas no texto que foram usadas para fundamentar a decisão.
+    5.  MONTAGEM DO JSON: APENAS APÓS executar os 4 passos anteriores, monte um objeto JSON com os dados que você encontrou. A chave "pontuacao" DEVE ser consistente com o veredito. Se algum dado específico (como "valorDaCausa" ou "dataAudiencia") não for encontrado, o valor do campo correspondente deve ser a string "Não especificado". O campo "precedentes" NUNCA deve ser 'undefined'; se nada for encontrado, retorne um array vazio [].
 
     Texto para análise: """${textoDoDocumento.substring(0, 8000)}"""
     Responda APENAS com o objeto JSON final.
@@ -45,12 +43,12 @@ async function analisarPeticao(textoDoDocumento) {
     return JSON.parse(jsonMatch[0]);
   } catch (error) {
     console.error("Erro no especialista de Petição:", error);
-    return { pontuacao: 0, teses: ["Erro na análise de IA."], precedentes: [{id: "ERRO", resumo: "Não foi possível gerar precedentes."}] };
+    return { pontuacao: 0, teses: ["Erro na análise de IA."], precedentes: [] };
   }
 }
 
 // ===================================================================
-// ESPECIALISTA 2: ANÁLISE DE CONTESTAÇÃO (VERSÃO ESTÁVEL)
+// ESPECIALISTA 2: ANÁLISE DE CONTESTAÇÃO (ESTÁVEL)
 // ===================================================================
 async function analisarContestacao(textoDoDocumento) {
   const prompt = `Analise a peça de contestação a seguir. Identifique os 2 principais argumentos de defesa e 1 possível ponto fraco. Retorne sua análise como um objeto JSON com as chaves "tipoDePeca", "tesesDaDefesa", e "pontosFracosDaDefesa". Texto para análise: """${textoDoDocumento.substring(0, 8000)}""" Responda APENAS com o objeto JSON.`;
@@ -92,5 +90,5 @@ app.post('/v1/analise/contestacao', upload.single('arquivo'), async (req, res) =
 });
 
 app.listen(3000, () => {
-  console.log('Servidor Praetor IA v5.0 (Produção Final) está rodando!');
+  console.log('Servidor Praetor IA v5.1 (Produção Final) está rodando!');
 });
