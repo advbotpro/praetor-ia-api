@@ -1,13 +1,9 @@
-version: '3.8' # Versão mais recente e robusta
+version: '3.8'
 services:
-  praetor-api: # Nome do seu serviço (pode ser "api", "backend", etc.)
-    build: . # Indica que o Dockerfile está no mesmo diretório do docker-compose.yml
-    # Ou, se preferir usar uma imagem já construída e presente no seu Portainer:
-    # image: praetor-ia-api:latest # Use o nome da imagem que você construiu na Opção 1
+  praetor-api:
+    build: .
     ports:
-      - "3000:3000" # Mapeia a porta 3000 do host para a porta 3000 do contêiner
-    restart: unless-stopped # Garante que o contêiner reinicie se parar (ignorado em algumas configs)
+      - "3000:3000"
+    restart: unless-stopped
     environment:
-      # Se precisar de variáveis de ambiente para o seu Node.js, adicione aqui
-NODE_ENV=production
-- [cite_start]API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U 
+      - API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U
