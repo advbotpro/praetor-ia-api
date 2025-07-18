@@ -10,4 +10,4 @@ services:
     environment:
       # Se precisar de variáveis de ambiente para o seu Node.js, adicione aqui
 NODE_ENV=production
-- [cite_start]API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U # [cite: 9] CUIDADO: Não é seguro deixar chaves de API diretamente no código ou em arquivos de controle de versão em produção. Considere usar Docker Secrets ou variáveis de ambiente seguras no Portainer.
+- [cite_start]API_KEY=AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U 
