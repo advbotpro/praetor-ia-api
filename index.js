@@ -6,9 +6,9 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { createClient } = require('@supabase/supabase-js'); // Importa o Supabase
 
 // --- CONFIGURAÇÃO DA IA E DO BANCO DE DADOS ---
-const GEMINI_API_KEY = 'SUA_CHAVE_DE_API_DO_GOOGLE_CLOUD'; // Substitua pela sua chave do Gemini
-const SUPABASE_URL = 'URL_DO_SEU_PROJETO_SUPABASE'; // Substitua pela URL do seu projeto Supabase
-const SUPABASE_ANON_KEY = 'CHAVE_ANON_DO_SEU_PROJETO_SUPABASE'; // Substitua pela chave Anon (pública)
+const GEMINI_API_KEY = 'AIzaSyCJns5JfhcVa6wepwcUCaVnkhnD-JFxP4U'; // Substitua pela sua chave do Gemini
+const SUPABASE_URL = 'https://bfxkxmonebnnxyvvhgkn.supabase.co'; // Substitua pela URL do seu projeto Supabase
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmeGt4bW9uZWJubnh5dnZoZ2tuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NjEzNTMsImV4cCI6MjA2ODIzNzM1M30.HPApBppy21WMhoN6UGoE1GROCctnAnAOPdUo4a5Tlfo'; // Substitua pela chave Anon (pública)
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
